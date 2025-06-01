@@ -111,21 +111,49 @@ We analyzed individual variables to understand their distributions and identify 
   frameborder="0"
 ></iframe>
 
+#### High Rating (`high_rating`)
+- A more detailed and closer look at the distribution of higher ratings
+
+<iframe
+  src="assets/high_rating_dist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
 ---
 
 ### Bivariate Analysis
 
 We explored relationships between recipe characteristics and average rating to identify potentially predictive features.
 
-#### `n_ingredients` vs. `avg_rating`
-- Boxplots show that high-rated recipes tend to have slightly **fewer ingredients**.
-- Grouped line plots confirm a negative trend: simpler recipes generally perform better.
+#### `minutes` vs. `high_rating`
+Genereally, the shorter the recipe takes to complete, the higher the precision. As the minutes increases, the variability in the ratings increases.
+<iframe
+  src="assets/bivariate_min.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
-*_(Embed boxplot and line plot of `n_ingredients` vs. `avg_rating`)_*
+#### `n_ingredients` vs. `high_rating`
+Generally, the less number of ingredients, the higher the precision. As the number of ingredients increases, the variability in the ratings increases. However, the graph dispays a curved shape, indicating that there are higher ratings at the more extreme ends of the spectrum while the graph maintains lower constant rating with less polarizing number of ingredients.
 
-#### `n_steps` and `minutes` vs. `high_rating`
-- Recipes with fewer steps and shorter durations tend to receive higher ratings.
-- High-rated recipes are typically **shorter and simpler** to prepare.
+<iframe
+  src="assets/bivariate_ingre.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+#### `n_steps` vs. `high_rating`
+Generally, the less number of steps, the higher the precision. As the number of steps increases, the variability in the ratings increases.
+<iframe
+  src="assets/bivariate_step.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 ---
 
