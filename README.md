@@ -9,6 +9,8 @@ In this project, we investigate the question:
 
 > **What recipe characteristics are associated with higher user ratings?**
 
+---
+
 This question is important for both casual cooks and content platforms. For users, understanding which traits are linked to favorable ratings can guide recipe selection and creation. For platforms, identifying these features could improve personalization and recommendation systems.
 
 To explore this, we used two CSV files that were derived from [Food.com](https://www.food.com/?ref=nav):
@@ -26,7 +28,9 @@ To explore this, we used two CSV files that were derived from [Food.com](https:/
 | `nutrition`      | Nutrition info: \[calories, fat, sugar, sodium, protein, saturated fat, carbs] |
 | `n_steps`        | Number of steps in recipe                                                      |
 | `n_ingredients`  | Number of ingredients in the recipe                                            |
+| `description`    | User-provided description                                                      |
 
+<br>
 
 `interactions`, contains 731927 rows, with 3 columns that are relevant to our investigation.
 
@@ -36,6 +40,8 @@ To explore this, we used two CSV files that were derived from [Food.com](https:/
 | `date`      | Date of rating or review                |
 | `rating`    | Rating given                            |
 
+<br>
+---
 
 ## Data Cleaning and Exploratory Data Analysis
 
@@ -53,6 +59,8 @@ In order to prepare our data:
     - We wanted to explore whether the timing of recipe submissions correlates with user ratings. Typically, recipes submitted on weekends may reflect more elaborate or carefully prepared dishes, potentially leading to higher ratings. Conversely, weekday recipes may be faster or more casual, which could influence user preferences differently.
 - We parsed the nutrition column into separate columns like sugar_pdv, protein_pdv, and calories.
     - We wanted to conclude if health concerns or benefits could affect recipe ratings.
+- We created a `desc_len` column which is essentially the number of characters in the description of the recipe.
+    - We wanted to test the idea of simplicity, determining if shorter or longer descriptions could have an effect on the recipe's rating.
 
 | **Column Name**  | **Description**                                                           |
 |------------------|---------------------------------------------------------------------------|
@@ -71,21 +79,22 @@ In order to prepare our data:
 | `high_rating`    | Whether the average rating is at least 4.5                                |
 | `day_of_week`    | Day of the week the recipe was submitted (derived from `submitted`)       |
 | `is_weekend`     | Boolean indicating if it was submitted on a weekend (Sat/Sun)             |
+| `desc_len`       | Length of the description (number of characters in the description)       |
+
+<br>
+
+Because our DataFrame contains many columns, below, we only included the most relevant columns in the head of our cleaned DataFrame:
 
 
+| name                                 |   minutes |   n_steps |   n_ingredients |   avg_rating | high_rating   | is_weekend   |
+|:-------------------------------------|----------:|----------:|----------------:|-------------:|:--------------|:-------------|
+| 1 brownies in the world    best ever |        40 |        10 |               9 |            4 | False         | False        |
+| 1 in canada chocolate chip cookies   |        45 |        12 |              11 |            5 | True          | False        |
+| 412 broccoli casserole               |        40 |         6 |               9 |            5 | True          | False        |
+| millionaire pound cake               |       120 |         7 |               7 |            5 | True          | False        |
+| 2000 meatloaf                        |        90 |        17 |              13 |            5 | True          | False        |
 
-Below is the head of our cleaned DataFrame.
-
-<div style="overflow-x: auto;">
-| name                                 |   minutes |   n_steps |   n_ingredients |   avg_rating |   calories |   total_fat_pdv |   sugar_pdv |   sodium_pdv |   protein_pdv |   sat_fat_pdv |   carbs_pdv | high_rating   | day_of_week   | is_weekend   |
-|:-------------------------------------|----------:|----------:|----------------:|-------------:|-----------:|----------------:|------------:|-------------:|--------------:|--------------:|------------:|:--------------|:--------------|:-------------|
-| 1 brownies in the world    best ever |        40 |        10 |               9 |            4 |      138.4 |              10 |          50 |            3 |             3 |            19 |           6 | False         | Monday        | False        |
-| 1 in canada chocolate chip cookies   |        45 |        12 |              11 |            5 |      595.1 |              46 |         211 |           22 |            13 |            51 |          26 | True          | Monday        | False        |
-| 412 broccoli casserole               |        40 |         6 |               9 |            5 |      194.8 |              20 |           6 |           32 |            22 |            36 |           3 | True          | Friday        | False        |
-| millionaire pound cake               |       120 |         7 |               7 |            5 |      878.3 |              63 |         326 |           13 |            20 |           123 |          39 | True          | Tuesday       | False        |
-| 2000 meatloaf                        |        90 |        17 |              13 |            5 |      267   |              30 |          12 |           12 |            29 |            48 |           2 | True          | Tuesday       | False        |
-</div>
-
+---
 
 ### Univariate Analysis
 
@@ -102,6 +111,8 @@ We analyzed individual variables to understand their distributions and identify 
   frameborder="0"
 ></iframe>
 
+---
+
 ### Bivariate Analysis
 
 We explored relationships between recipe characteristics and average rating to identify potentially predictive features.
@@ -115,6 +126,8 @@ We explored relationships between recipe characteristics and average rating to i
 #### `n_steps` and `minutes` vs. `high_rating`
 - Recipes with fewer steps and shorter durations tend to receive higher ratings.
 - High-rated recipes are typically **shorter and simpler** to prepare.
+
+---
 
 ### Interesting Aggregates
 
@@ -130,6 +143,8 @@ We grouped and binned data to discover broader rating trends across recipe categ
 *_(Embed grouped tables or bar plots for each of these patterns)_*
 
 These aggregates helped us pinpoint features that contribute meaningfully to rating prediction and informed our feature selection in the modeling stages.
+
+---
 
 ## Assessment of Missingness
 
