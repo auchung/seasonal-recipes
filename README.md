@@ -1,4 +1,4 @@
-# Seasoned to Sweetness: Do Sugary Recipes Get Higher Ratings in Certain Seasons?
+# The Secret Sauce to Recipe Ratings: What Makes a Recipe Shine?
 Authors: Audrey Chung & Amrutha Potluri
 
 ## Introduction
@@ -30,7 +30,6 @@ To explore this, we used two CSV files that were derived from [Food.com](https:/
 | `n_ingredients`  | Number of ingredients in the recipe                                            |
 | `description`    | User-provided description                                                      |
 
-<br>
 
 `interactions`, contains 731927 rows, with 3 columns that are relevant to our investigation.
 
@@ -40,7 +39,6 @@ To explore this, we used two CSV files that were derived from [Food.com](https:/
 | `date`      | Date of rating or review                |
 | `rating`    | Rating given                            |
 
-<br>
 ---
 
 ## Data Cleaning and Exploratory Data Analysis
@@ -106,7 +104,7 @@ We analyzed individual variables to understand their distributions and identify 
 
 <iframe
   src="assets/avg_rating_dist.html"
-  width="800"
+  width="1000"
   height="400"
   frameborder="0"
 ></iframe>
@@ -116,7 +114,7 @@ We analyzed individual variables to understand their distributions and identify 
 
 <iframe
   src="assets/high_rating_dist.html"
-  width="800"
+  width="1000"
   height="400"
   frameborder="0"
 ></iframe>
@@ -221,16 +219,6 @@ We calculated the observed difference between the **maximum and minimum** missin
 **Conclusion**: Since the p-value is greater than 0.05, we fail to reject the null hypothesis. **There is no strong evidence that `avg_rating` missingness depends on `day_of_week`.**
 
 
-- We identified `avg_rating` as a column likely to be **NMAR**, due to its reliance on user interactions.
-- Our permutation tests showed that its missingness **does depend on `minutes`** but **not on `day_of_week`**.
-- These findings informed our data cleaning choices and modeling decisions in later steps.
-
-
-We identified missing values in the rating column and concluded it is **Not Missing At Random (NMAR)**because users may skip ratings for recipes they didn't like or finish.
-To explore dependencies, we performed permutation tests:
-    •    The missingness of rating was dependent on `submitted` due to the fact that more recent recipes had more missing ratings.
-    •    It was not dependent on `n_steps` (number of steps in the recipe).
-
 ## Hypothesis Testing
 
 
@@ -263,9 +251,6 @@ We computed the observed difference in their mean `avg_rating`, then shuffled th
 
 - **Observed Difference**: _(insert your value, e.g., 0.0091)_
 - **p-value**: _(insert your value, e.g., 0.375)_
-
-
-### Conclusion
 
 Since the p-value is **greater than 0.05**, we **fail to reject the null hypothesis**. This means we do not have sufficient evidence to say that the number of ingredients in a recipe significantly affects its average rating.
 
