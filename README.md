@@ -107,7 +107,7 @@ We analyzed individual variables to understand their distributions and identify 
 <iframe
   src="assets/avg_rating_dist.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -117,7 +117,7 @@ We analyzed individual variables to understand their distributions and identify 
 <iframe
   src="assets/high_rating_dist.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
