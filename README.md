@@ -132,7 +132,7 @@ Genereally, the shorter the recipe takes to complete, the higher the precision. 
 <iframe
   src="assets/bivariate_min.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -142,7 +142,7 @@ Generally, the less number of ingredients, the higher the precision. As the numb
 <iframe
   src="assets/bivariate_ingre.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -151,7 +151,7 @@ Generally, the less number of steps, the higher the precision. As the number of 
 <iframe
   src="assets/bivariate_step.html"
   width="800"
-  height="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -162,16 +162,17 @@ Generally, the less number of steps, the higher the precision. As the number of 
 We grouped and binned data to discover broader rating trends across recipe categories.
 
 #### Average Rating by Number of Steps
-- Grouped by `n_steps`, we observed a non-linear trend: mid-range complexity (around 6–10 steps) yields the highest average ratings.
+- Grouped by every 10 `n_steps`, we observed a that there is little to no difference in the average ratings. non-linear trend: mid-range complexity (around 6–10 steps) yields the highest average ratings.
 
-#### Average Rating by Prep Time (Minutes)
-- Binned into 10-minute intervals, recipes between 30–60 minutes had the highest average ratings.
+| steps       |    mean |
+|:------------|--------:|
+| 0-10        | 4.62419 |
+| 10-20       | 4.62345 |
+| 20-30       | 4.63594 |
+| 30-40       | 4.68632 |
+| 40-50       | 4.70977 |
 
-
-*_(Embed grouped tables or bar plots for each of these patterns)_*
-
-These aggregates helped us pinpoint features that contribute meaningfully to rating prediction and informed our feature selection in the modeling stages.
-
+These aggregates helped us recognizae that other factors may have a stronger role in impacting average ratings. For instace, a user might give 5 stars to both a quick 3-step snack and a fancy 25-step dinner because despite their differences, both recipes worked well for their purpose.
 ---
 
 ## Assessment of Missingness
