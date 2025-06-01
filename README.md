@@ -56,12 +56,11 @@ In order to prepare our data:
 
 | **Column Name**  | **Description**                                                           |
 |------------------|---------------------------------------------------------------------------|
-| `avg_rating`     | The average user rating                                 |
-| `high_rating`    | Whether the average rating is at least 4.5                                |
+| `name`           | The name of the recipe                                                    |
+| `avg_rating`     | The average user rating                                                   |
 | `n_ingredients`  | Number of ingredients in the recipe                                       |
 | `n_steps`        | Number of steps in the recipe's instructions                              |
 | `minutes`        | Total time (in minutes) to prepare the recipe                             |
-| `nutrition`      | A list of 7 nutrition facts (e.g., calories, fat, sugar, etc.)            |
 | `calories`       | Number of calories in a recipe                                            |
 | `total_fat_pdv`  | Percent daily value of total fats in a recipe                             |
 | `sugar_pdv`      | Percent daily value of sugar in a recipe                                  |
@@ -69,9 +68,21 @@ In order to prepare our data:
 | `protein_pdv`    | Percent daily value of protein in a recipe                                |
 | `sat_fat_pdv`    | Percent daily value of saturated fats in a recipe                         |
 | `carbs_pdv`      | Percent daily value of carbohydrates in a recipe                          |
-| `submitted`      | Timestamp of when the recipe was submitted                                |
+| `high_rating`    | Whether the average rating is at least 4.5                                |
 | `day_of_week`    | Day of the week the recipe was submitted (derived from `submitted`)       |
 | `is_weekend`     | Boolean indicating if it was submitted on a weekend (Sat/Sun)             |
+
+
+Below is the head of our cleaned DataFrame.
+
+| name                                 |   minutes |   n_steps |   n_ingredients |   avg_rating |   calories |   total_fat_pdv |   sugar_pdv |   sodium_pdv |   protein_pdv |   sat_fat_pdv |   carbs_pdv | high_rating   | day_of_week   | is_weekend   |
+|:-------------------------------------|----------:|----------:|----------------:|-------------:|-----------:|----------------:|------------:|-------------:|--------------:|--------------:|------------:|:--------------|:--------------|:-------------|
+| 1 brownies in the world    best ever |        40 |        10 |               9 |            4 |      138.4 |              10 |          50 |            3 |             3 |            19 |           6 | False         | Monday        | False        |
+| 1 in canada chocolate chip cookies   |        45 |        12 |              11 |            5 |      595.1 |              46 |         211 |           22 |            13 |            51 |          26 | True          | Monday        | False        |
+| 412 broccoli casserole               |        40 |         6 |               9 |            5 |      194.8 |              20 |           6 |           32 |            22 |            36 |           3 | True          | Friday        | False        |
+| millionaire pound cake               |       120 |         7 |               7 |            5 |      878.3 |              63 |         326 |           13 |            20 |           123 |          39 | True          | Tuesday       | False        |
+| 2000 meatloaf                        |        90 |        17 |              13 |            5 |      267   |              30 |          12 |           12 |            29 |            48 |           2 | True          | Tuesday       | False        |
+
 
 
 ### Univariate Analysis
