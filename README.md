@@ -159,10 +159,8 @@ Generally, the less number of steps, the higher the precision. As the number of 
 
 ### Interesting Aggregates
 
-We grouped and binned data to discover broader rating trends across recipe categories.
-
 #### Average Rating by Number of Steps
-- Grouped by every 10 `n_steps`, we observed a that there is little to no difference in the average ratings. non-linear trend: mid-range complexity (around 6–10 steps) yields the highest average ratings.
+- Grouped by every 10 `n_steps`, we observed a that there is little to no difference in the average ratings. 
 
 | steps       |    mean |
 |:------------|--------:|
@@ -172,7 +170,8 @@ We grouped and binned data to discover broader rating trends across recipe categ
 | 30-40       | 4.68632 |
 | 40-50       | 4.70977 |
 
-These aggregates helped us recognizae that other factors may have a stronger role in impacting average ratings. For instace, a user might give 5 stars to both a quick 3-step snack and a fancy 25-step dinner because despite their differences, both recipes worked well for their purpose.
+- This aggregate helped us recognizae that other factors may have a stronger role in impacting average ratings. For instace, a user might give 5 stars to both a quick 3-step snack and a fancy 25-step dinner because despite their differences, both recipes worked well for their purpose.
+
 ---
 
 ## Assessment of Missingness
@@ -200,8 +199,8 @@ To further assess missingness, we performed permutation tests to determine wheth
 
 We computed the observed difference in mean `minutes` between recipes with and without a rating. Then, we ran 1000 permutations by shuffling the missingness labels and recomputing the mean difference each time.
 
-- **Observed Difference**: _(insert value, e.g., 10.2 minutes)_
-- **p-value**: _(insert value, e.g., 0.004)_
+- **Observed Difference**: 
+- **p-value**: 0.036
 
 **Conclusion**: Since the p-value is less than 0.05, we reject the null hypothesis. **Missingness in `avg_rating` does depend on `minutes`.**
 
@@ -220,8 +219,6 @@ We calculated the observed difference between the **maximum and minimum** missin
 - **p-value**: _(insert value, e.g., 0.231)_
 
 **Conclusion**: Since the p-value is greater than 0.05, we fail to reject the null hypothesis. **There is no strong evidence that `avg_rating` missingness depends on `day_of_week`.**
-
----
 
 
 - We identified `avg_rating` as a column likely to be **NMAR**, due to its reliance on user interactions.
@@ -250,8 +247,6 @@ We conducted a hypothesis test to determine whether the **number of ingredients*
 - **Null Hypothesis (H₀)**: There is no difference in average ratings between recipes with more ingredients and those with fewer ingredients.
 - **Alternative Hypothesis (H₁)**: There is a difference in average ratings between recipes with more ingredients and those with fewer ingredients.
 
----
-
 ### Test Design
 
 - **Test Type**: Permutation test (non-parametric)
@@ -264,14 +259,11 @@ We first split the dataset into two groups:
 
 We computed the observed difference in their mean `avg_rating`, then shuffled the `n_ingredients` values 1000 times to create a null distribution of differences. The p-value was computed as the proportion of permuted differences that were greater than or equal to the observed difference (in absolute value).
 
----
-
 ### Results
 
 - **Observed Difference**: _(insert your value, e.g., 0.0091)_
 - **p-value**: _(insert your value, e.g., 0.375)_
 
----
 
 ### Conclusion
 
@@ -281,6 +273,7 @@ Even though our exploratory analysis suggested a potential trend, the difference
 
 *_(Optional: Embed a histogram of the null distribution with the observed statistic marked)_*
 
+----
 
 ## Framing a Prediction Problem
 
@@ -298,7 +291,6 @@ This prediction task builds directly on our initial question about what characte
 - **Response Variable**: `avg_rating`
 - **Why**: `avg_rating` is a numeric (float) variable representing the average user rating of a recipe.
 
----
 
 ### Features Used
 
@@ -313,26 +305,12 @@ We restricted our features to those available **at the time a recipe is submitte
 
 All of these features are either directly available at the time of posting or can be derived without relying on future data like ratings, views, or user behavior.
 
----
-
 ### Evaluation Metric
 
 We chose **Root Mean Squared Error (RMSE)** to evaluate our model because:
 - It is appropriate for regression problems.
 - It penalizes large errors more heavily than MAE.
 - It provides an interpretable measure in the same units as the target variable (i.e., rating points).
-
----
-
-### Summary
-
-- **Problem Type**: Regression  
-- **Response**: `avg_rating`  
-- **Metric**: RMSE  
-- **Features**: All known before recipe is rated  
-- **Goal**: Learn how well we can predict a recipe’s rating from its characteristics alone
-
-This framing provides a realistic and useful task that mirrors how a recipe platform might estimate user interest based on content alone.
 
 
 We aim to predict whether a recipe will be highly rated.
@@ -367,8 +345,6 @@ The baseline model used the following **quantitative features**:
 
 All of these features are **numerical** and were **scaled using `StandardScaler`** to normalize their ranges. No categorical or ordinal encoding was needed at this stage.
 
----
-
 ### Model and Pipeline
 
 We used a **Linear Regression** model implemented inside an `sklearn` `Pipeline`, which included:
@@ -378,8 +354,6 @@ We used a **Linear Regression** model implemented inside an `sklearn` `Pipeline`
 
 We split the data into training and testing sets (80/20 split) to evaluate generalization.
 
----
-
 ### Evaluation Metric
 
 We used **Root Mean Squared Error (RMSE)** as our evaluation metric, since:
@@ -388,20 +362,13 @@ We used **Root Mean Squared Error (RMSE)** as our evaluation metric, since:
 - It penalizes larger errors more heavily.
 - It gives results in the same units as the ratings (0–5 scale).
 
----
-
 ### Performance
 
 - **Baseline RMSE**: _(insert your model’s test RMSE here, e.g., 0.4128)_
 
----
-
-### Conclusion
-
 The baseline model establishes a starting point for performance. Although simple, it already captures some signal from the features and provides a meaningful benchmark to improve upon in our final model.
 
-
-
+---
 
 ## Final Model
 
@@ -418,8 +385,6 @@ We added two new features to capture additional information:
 
 These features are known at the time of submission and may correlate with engagement or recipe quality.
 
----
-
 ### Feature Types
 
 - **Quantitative**:  
@@ -429,8 +394,6 @@ These features are known at the time of submission and may correlate with engage
 - **Binary**:  
   - `is_weekend`
   - Left as-is using `passthrough` in the `ColumnTransformer`
-
----
 
 ### Model and Pipeline
 
@@ -448,29 +411,19 @@ We performed **hyperparameter tuning** using `GridSearchCV` to search over:
 
 Cross-validation was performed on the training set only.
 
----
 
 ### Best Hyperparameters
 
 - `n_estimators`: _(e.g., 100)_  
 - `max_depth`: _(e.g., 10)_
 
----
-
 ### Evaluation
 
 - **Final RMSE**: _(insert your final model’s test RMSE, e.g., 0.3712)_
 
-Compared to our baseline, this model reduced error and demonstrated improved predictive power — particularly due to the new features and model flexibility.
+Compared to our baseline, this model reduced error and demonstrated improved predictive power — particularly due to the new features and model flexibility. The final model performs better than the baseline, supporting the idea that text-based and temporal features (like `description_length` and `is_weekend`) help explain user ratings. This model is more expressive and better suited for capturing subtle interactions between recipe attributes.
 
 ---
-
-### Conclusion
-
-The final model performs better than the baseline, supporting the idea that text-based and temporal features (like `description_length` and `is_weekend`) help explain user ratings. This model is more expressive and better suited for capturing subtle interactions between recipe attributes.
-
-
-
 
 ## Fairness Analysis
 
@@ -486,14 +439,10 @@ To assess whether our final model performs equitably across groups, we performed
 
 We used the **final fitted model from Step 7** and did not retrain or modify it during the test.
 
----
-
 ### Hypotheses
 
 - **Null Hypothesis (H₀)**: The model’s RMSE is equal for weekend and weekday recipes. Any observed difference is due to chance.
 - **Alternative Hypothesis (H₁)**: The model’s RMSE differs between weekend and weekday recipes.
-
----
 
 ### Test Design
 
@@ -503,17 +452,10 @@ Next, we performed a **permutation test**:
 - We shuffled the `is_weekend` labels 1000 times.
 - For each shuffle, we computed the RMSE difference.
 - We calculated the **p-value** as the proportion of permutations with a difference at least as large as the observed difference.
-
----
-
 ### Results
 
 - **Observed RMSE difference**: _(insert value, e.g., 0.0174)_
 - **p-value**: _(insert value, e.g., 0.194)_
-
----
-
-### Conclusion
 
 Since the p-value is greater than 0.05, we **fail to reject the null hypothesis**. This suggests that our model does **not show statistically significant unfairness** in predictive accuracy between weekend and weekday recipes.
 
