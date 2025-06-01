@@ -1,6 +1,10 @@
 # The Secret Sauce to Recipe Ratings: What Makes a Recipe Shine?
 Authors: Audrey Chung & Amrutha Potluri
 
+## Overview
+
+This project analyzes recipes from [Food.com](https://www.food.com/?ref=nav) to uncover what factors consist of the "secret sauce" to achieving high user ratings. By cleaning the data, engineering features, and building predictive models, we explore which recipe traits drive better reviews.
+
 ## Introduction
 
 The **Recipes and Ratings** dataset offers a rich look into user-submitted recipes, including ingredients, preparation steps, nutritional content, and user feedback in the form of ratings. With over 200,000 recipes and nearly 1 million interactions, it allows us to explore patterns that influence how well a recipe is received.
@@ -13,7 +17,7 @@ In this project, we investigate the question:
 
 This question is important for both casual cooks and content platforms. For users, understanding which traits are linked to favorable ratings can guide recipe selection and creation. For platforms, identifying these features could improve personalization and recommendation systems.
 
-To explore this, we used two CSV files that were derived from [Food.com](https://www.food.com/?ref=nav):
+To explore this, we used two CSV files: 
 - `RAW_recipes.csv`: Contains metadata for each recipe, such as ingredients, steps, and nutritional values.
 - `interactions.csv`: Contains user ratings for each recipe.
 
@@ -79,7 +83,6 @@ In order to prepare our data:
 | `is_weekend`     | Boolean indicating if it was submitted on a weekend (Sat/Sun)             |
 | `desc_len`       | Length of the description (number of characters in the description)       |
 
-<br>
 
 Because our DataFrame contains many columns, below, we only included the most relevant columns in the head of our cleaned DataFrame:
 
@@ -103,19 +106,19 @@ We analyzed individual variables to understand their distributions and identify 
 - This strong right skew motivated the creation of a binary `high_rating` variable (`avg_rating ≥ 4.5`).
 
 <iframe
-  src="assets/avg_rating_dist.html"
+  src="assets/univariate1.html"
   width="700"
-  height="500"
+  height="400"
   frameborder="0"
 ></iframe>
 
 #### High Rating (`high_rating`)
-- A more detailed and closer look at the distribution of higher ratings
+- A more detailed and closer look at the distribution of higher ratings.
 
 <iframe
-  src="assets/high_rating_dist.html"
+  src="assets/univariate2.html"
   width="700"
-  height="500"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -128,8 +131,8 @@ We explored relationships between recipe characteristics and average rating to i
 #### `minutes` vs. `high_rating`
 Genereally, the shorter the recipe takes to complete, the higher the precision. As the minutes increases, the variability in the ratings increases.
 <iframe
-  src="assets/bivariate_min.html"
-  width="800"
+  src="assets/bivariate1.html"
+  width="700"
   height="400"
   frameborder="0"
 ></iframe>
@@ -138,8 +141,8 @@ Genereally, the shorter the recipe takes to complete, the higher the precision. 
 Generally, the less number of ingredients, the higher the precision. As the number of ingredients increases, the variability in the ratings increases. However, the graph dispays a curved shape, indicating that there are higher ratings at the more extreme ends of the spectrum while the graph maintains lower constant rating with less polarizing number of ingredients.
 
 <iframe
-  src="assets/bivariate_ingre.html"
-  width="800"
+  src="assets/bivariate2.html"
+  width="700"
   height="400"
   frameborder="0"
 ></iframe>
@@ -147,8 +150,8 @@ Generally, the less number of ingredients, the higher the precision. As the numb
 #### `n_steps` vs. `high_rating`
 Generally, the less number of steps, the higher the precision. As the number of steps increases, the variability in the ratings increases.
 <iframe
-  src="assets/bivariate_step.html"
-  width="800"
+  src="assets/bivariate3.html"
+  width="700"
   height="400"
   frameborder="0"
 ></iframe>
@@ -167,6 +170,7 @@ Generally, the less number of steps, the higher the precision. As the number of 
 | 20-30       | 4.63594 |
 | 30-40       | 4.68632 |
 | 40-50       | 4.70977 |
+
 
 - This aggregate helped us recognizae that other factors may have a stronger role in impacting average ratings. For instace, a user might give 5 stars to both a quick 3-step snack and a fancy 25-step dinner because despite their differences, both recipes worked well for their purpose.
 
@@ -218,6 +222,7 @@ We calculated the observed difference between the **maximum and minimum** missin
 
 **Conclusion**: Since the p-value is greater than 0.05, we fail to reject the null hypothesis. **There is no strong evidence that `avg_rating` missingness depends on `day_of_week`.**
 
+---
 
 ## Hypothesis Testing
 
@@ -308,6 +313,7 @@ We aim to predict whether a recipe will be highly rated.
     - **Evaluation metric**: Accuracy
 This helps identify what kinds of recipes are most likely to succeed, providing insight for recipe developers and platforms.
 
+---
 
 ## Baseline Model
 
