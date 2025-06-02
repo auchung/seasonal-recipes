@@ -480,7 +480,7 @@ Next, we performed a **permutation test**:
 - We calculated the **p-value** as the proportion of permutations with a difference at least as large as the observed difference.
 
 <iframe
-  src="assets/perm_rmse.html"
+  src="assets/perm_rmse2.html"
   width="700"
   height="400"
   frameborder="0"
