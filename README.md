@@ -208,6 +208,7 @@ To further assess missingness, we performed permutation tests to determine wheth
 
 We computed the observed difference in mean `minutes` between recipes with and without a rating. Then, we ran 1000 permutations by shuffling the missingness labels and recomputing the mean difference each time.
 
+<<<<<<< HEAD
 <iframe
   src="assets/perm_min.html"
   width="700"
@@ -218,6 +219,19 @@ We computed the observed difference in mean `minutes` between recipes with and w
 - **Observed Difference**: 117.34
 - **p-value**: 0.036
 
+=======
+- **Observed Difference**: 117.34
+- **p-value**: 0.036
+
+<iframe
+  src="assets/perm_min.html"
+  width="700"
+  height="400"
+  frameborder="0"
+></iframe>
+
+
+>>>>>>> 4c5ba8b0b4a32ed507d3de855fafdec0c70bdcf4
 **Conclusion**: Since the p-value is less than 0.05, we reject the null hypothesis. **Missingness in `avg_rating` does depend on `minutes`.**
 
 
@@ -246,6 +260,13 @@ We calculated the observed difference between the **maximum and minimum** missin
 
 - **Observed Difference**: 0.005
 - **p-value**: 0.473
+
+<iframe
+  src="assets/perm_day.html"
+  width="700"
+  height="400"
+  frameborder="0"
+></iframe>
 
 **Conclusion**: Since the p-value is greater than 0.05, we fail to reject the null hypothesis. **There is no strong evidence that `avg_rating` missingness depends on `day_of_week`.**
 
@@ -480,11 +501,21 @@ Next, we performed a **permutation test**:
 - For each shuffle, we computed the RMSE difference.
 - We calculated the **p-value** as the proportion of permutations with a difference at least as large as the observed difference.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4c5ba8b0b4a32ed507d3de855fafdec0c70bdcf4
 - **Observed RMSE difference**: 0.0329
 - **p-value**: 0.5250
 
 Since the p-value is greater than 0.05, we **fail to reject the null hypothesis**. This suggests that our model does **not show statistically significant unfairness** in predictive accuracy between weekend and weekday recipes.
+
+<iframe
+  src="assets/rmse.html"
+  width="700"
+  height="400"
+  frameborder="0"
+></iframe>
 
 Although small differences exist, they are consistent with what we’d expect under random variation, and we did not find strong evidence of model bias across this grouping.
 
