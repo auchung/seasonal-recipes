@@ -3,11 +3,11 @@ Authors: Audrey Chung & Amrutha Potluri
 
 ## Overview
 
-This project analyzes recipes from [Food.com](https://www.food.com/?ref=nav) to uncover what factors consist of the "secret sauce" to achieving high user ratings. By cleaning the data, engineering features, and building predictive models, we explore which recipe traits drive better reviews.
+This project analyzes recipes from [Food.com](https://www.food.com/?ref=nav) to uncover what factors make up the "secret sauce" to achieving high user ratings. By cleaning the data, engineering features, and building predictive models, we explore which recipe traits drive better reviews.
 
 ## Introduction
 
-The **Recipes and Ratings** dataset offers a rich look into user-submitted recipes, including ingredients, preparation steps, nutritional content, and user feedback in the form of ratings. With over 200,000 recipes and nearly 1 million interactions, it allows us to explore patterns that influence how well a recipe is received.
+The **Recipes and Ratings** dataset offers a rich look into user-submitted recipes, including ingredients, preparation steps, nutritional content, and user feedback in the form of ratings. With over 80,000 recipes and nearly 800,000 interactions, it allows us to explore patterns that influence how well a recipe is received.
 
 In this project, we investigate the question:
 
@@ -215,7 +215,7 @@ We computed the observed difference in mean `minutes` between recipes with and w
 ></iframe>
 
 - **Observed Difference**: 117.34
-- **p-value**: 0.036
+- **p-value**: 0.037
 
 **Conclusion**: Since the p-value is less than 0.05, we reject the null hypothesis. **Missingness in `avg_rating` does depend on `minutes`.**
 
@@ -244,14 +244,13 @@ We calculated the observed difference between the **maximum and minimum** missin
 ></iframe>
 
 - **Observed Difference**: 0.005
-- **p-value**: 0.473
+- **p-value**: 0.467
 
 **Conclusion**: Since the p-value is greater than 0.05, we fail to reject the null hypothesis. **There is no strong evidence that `avg_rating` missingness depends on `day_of_week`.**
 
 ---
 
 ## Hypothesis Testing
-
 
 We conducted a hypothesis test to determine whether the **number of ingredients** in a recipe is associated with its **average rating**.
 
@@ -285,8 +284,8 @@ We computed the observed difference in their mean `avg_rating`, then shuffled th
   frameborder="0"
 ></iframe>
 
-- **Observed Difference**: -0.0040
-- **p-value**: 0.3730
+- **Observed Difference**: -0.004
+- **p-value**: 0.370
 
 Since the p-value is **greater than 0.05**, we **fail to reject the null hypothesis**. This means we do not have sufficient evidence to say that the number of ingredients in a recipe significantly affects its average rating.
 
@@ -372,17 +371,7 @@ We added two new features to capture additional information:
 
 We replaced the linear model with a **Random Forest Regressor**, which can capture non-linear interactions and variable importance more effectively.
 
-We constructed a full `Pipeline` with:
-
-1. A `ColumnTransformer` to apply `StandardScaler` to numeric features and pass through binary ones  
-2. A `RandomForestRegressor` model
-
-We performed **hyperparameter tuning** using `GridSearchCV` to search over:
-
-- `n_estimators`: [50, 100]  
-- `max_depth`: [5, 10, None]
-
-Cross-validation was performed on the training set and the combination that minimized the RMSE was selected for the hyperparameters.
+We performed **hyperparameter tuning** using `GridSearchCV`. Cross-validation was performed on the training set and the combination that minimized the RMSE was selected for the hyperparameters.
 
 ### Best Hyperparameters
 
@@ -424,6 +413,6 @@ To assess whether our final model performs equitably across groups, we performed
 ></iframe>
 
 - **Observed RMSE difference**: 0.0329
-- **p-value**: 0.5250
+- **p-value**: 0.5230
 
 Since the p-value is greater than 0.05, we **fail to reject the null hypothesis**. This suggests that our model does **not show statistically significant unfairness** in predictive accuracy between weekend and weekday recipes.
