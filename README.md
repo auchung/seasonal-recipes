@@ -163,16 +163,16 @@ Generally, the less number of steps, the higher the precision. As the number of 
 #### Average Rating by Number of Steps
 - Grouped by every 10 `n_steps`, we observed a that there is little to no difference in the average ratings. 
 
-| steps       |    mean |
-|:------------|--------:|
-| 0-10        | 4.62419 |
-| 10-20       | 4.62345 |
-| 20-30       | 4.63594 |
-| 30-40       | 4.68632 |
-| 40-50       | 4.70977 |
+| Number of Steps       |    Mean |
+|:--------------------- |--------:|
+| 0-10                  | 4.62419 |
+| 10-20                 | 4.62345 |
+| 20-30                 | 4.63594 |
+| 30-40                 | 4.68632 |
+| 40-50                 | 4.70977 |
 
 
-- This aggregate helped us recognizae that other factors may have a stronger role in impacting average ratings. For instace, a user might give 5 stars to both a quick 3-step snack and a fancy 25-step dinner because despite their differences, both recipes worked well for their purpose.
+- This aggregate helped us recognize that other factors may have a stronger role in impacting average ratings. For instace, a user might give 5 stars to both a quick 3-step snack and a fancy 25-step dinner because despite their differences, both recipes worked well for their purpose.
 
 ---
 
@@ -193,7 +193,7 @@ Thus, we believe that `description` is **likely NMAR** where its missingness may
 
 To further assess missingness, we performed permutation tests to determine whether the missingness of `avg_rating` depends on other observed features.
 
-#### Test 1: Does missingness in `avg_rating` depend on `minutes`?
+#### Does missingness in `avg_rating` depend on `minutes`?
 
 - **Null Hypothesis (H₀)**: Missingness in `avg_rating` is independent of `minutes`.
 - **Alternative Hypothesis (H₁)**: Missingness in `avg_rating` depends on `minutes`.
@@ -222,7 +222,7 @@ We computed the observed difference in mean `minutes` between recipes with and w
 
 ---
 
-#### Test 2: Does missingness in `avg_rating` depend on `day_of_week`?
+#### Does missingness in `avg_rating` depend on `day_of_week`?
 
 - **Null Hypothesis (H₀)**: The distribution of missingness in `avg_rating` is the same across all days of the week.
 - **Alternative Hypothesis (H₁)**: The missingness in `avg_rating` varies by day of the week.
@@ -263,12 +263,12 @@ We conducted a hypothesis test to determine whether the **number of ingredients*
 
 ### Hypotheses
 
-- **Null Hypothesis (H₀)**: There is no difference in average ratings between recipes with more ingredients and those with fewer ingredients.
+- **Null Hypothesis (H₀)**: There is *no* difference in average ratings between recipes with more ingredients and those with fewer ingredients.
 - **Alternative Hypothesis (H₁)**: There is a difference in average ratings between recipes with more ingredients and those with fewer ingredients.
 
 ### Test Design
 
-- **Test Type**: Permutation test (non-parametric)
+- **Test Type**: Permutation test
 - **Test Statistic**: Difference in mean average rating between recipes with more than the median number of ingredients vs. at or below the median
 - **Significance Level (α)**: 0.05
 
@@ -290,8 +290,6 @@ We computed the observed difference in their mean `avg_rating`, then shuffled th
 
 Since the p-value is **greater than 0.05**, we **fail to reject the null hypothesis**. This means we do not have sufficient evidence to say that the number of ingredients in a recipe significantly affects its average rating.
 
-Even though our exploratory analysis suggested a potential trend, the difference could plausibly be due to random variation in the data.
-
 ----
 
 ## Framing a Prediction Problem
@@ -308,12 +306,12 @@ This prediction task builds directly on our initial question about what characte
 
 - **Type**: Regression
 - **Response Variable**: `avg_rating`
-- **Why**: `avg_rating` is a numeric (float) variable representing the average user rating of a recipe.
+  - `avg_rating` is a quantitative variable representing the average user rating of a recipe.
 
 
 ### Features Used
 
-We restricted our features to those available **at the time a recipe is submitted**, ensuring no label leakage. These include:
+We restricted our features to those available **at the time a recipe is submitted**, rather than features not known at the time.
 
 - `n_ingredients`: Number of ingredients in the recipe  
 - `n_steps`: Number of instructions  
@@ -322,25 +320,9 @@ We restricted our features to those available **at the time a recipe is submitte
 - `description_length`: Number of characters in the recipe description (engineered)  
 - `is_weekend`: Whether the recipe was submitted on a weekend (engineered)
 
-All of these features are either directly available at the time of posting or can be derived without relying on future data like ratings, views, or user behavior.
-
 ### Evaluation Metric
 
-We chose **Root Mean Squared Error (RMSE)** to evaluate our model because:
-- It is appropriate for regression problems.
-- It penalizes large errors more heavily than MAE.
-- It provides an interpretable measure in the same units as the target variable (i.e., rating points).
-
-
-We aim to predict whether a recipe will be highly rated.
-- **Type:** Binary classification
-- **Target variable:** `high_rating``
-- **Features available at prediction time:**
-    - **Nutritional:** `sugar_pdv`, `protein_pdv`, `calories`
-    - **Metadata:** `n_steps`, `minutes`
-    - **Temporal:** `day_of_week`, `month`
-    - **Evaluation metric**: Accuracy
-This helps identify what kinds of recipes are most likely to succeed, providing insight for recipe developers and platforms.
+We chose **Root Mean Squared Error (RMSE)** to evaluate our model because RMSEs are applicable for regression problems and penalizes large errors more heavily than MAEs while providing an interpretable measure in the same units as the target variable.
 
 ---
 
@@ -354,39 +336,20 @@ We built a baseline regression model to predict a recipe’s average rating (`av
 
 The baseline model used the following **quantitative features**:
 
-- `n_ingredients`: Number of ingredients  
-- `n_steps`: Number of steps in the recipe  
-- `minutes`: Total prep time  
-- `calories`: Total calories  
-- `protein_pdv`: Protein percent daily value  
-- `total_fat_pdv`: Fat percent daily value  
-- `sugar_pdv`: Sugar percent daily value  
-- `sodium_pdv`: Sodium percent daily value
-
-All of these features are **numerical** and were **scaled using `StandardScaler`** to normalize their ranges. No categorical or ordinal encoding was needed at this stage.
-
-### Model and Pipeline
-
-We used a **Linear Regression** model implemented inside an `sklearn` `Pipeline`, which included:
-
-1. **Feature scaling** (StandardScaler)
-2. **Model fitting** (LinearRegression)
-
-We split the data into training and testing sets (80/20 split) to evaluate generalization.
-
-### Evaluation Metric
-
-We used **Root Mean Squared Error (RMSE)** as our evaluation metric, since:
-
-- It is appropriate for continuous outcomes.
-- It penalizes larger errors more heavily.
-- It gives results in the same units as the ratings (0–5 scale).
+- `n_ingredients` (int): Number of ingredients  
+- `n_steps` (int): Number of steps in the recipe  
+- `minutes` (int): Total prep time  
+- `calories` (float): Total calories  
+- `protein_pdv` (float): Protein percent daily value  
+- `total_fat_pdv` (float): Fat percent daily value  
+- `sugar_pdv` (float): Sugar percent daily value  
+- `sodium_pdv`(float): Sodium percent daily value
 
 ### Performance
 
 - **Baseline RMSE**: 0.6360
 
-The baseline model establishes a starting point for performance. Although simple, it already captures some signal from the features and provides a meaningful benchmark to improve upon in our final model.
+The baseline model establishes a starting point for performance. Although this model can improve, it already captures some meaning from the features and establishing a benchmark to refer back to.
 
 ---
 
@@ -400,20 +363,10 @@ To improve upon our baseline, we engineered new features and used a more flexibl
 
 We added two new features to capture additional information:
 
-- **`description_length`**: Number of characters in the recipe’s `description` field. This may reflect the richness or clarity of instructions.
+- **`description_length`**: Number of characters in the recipe’s `description` field. This may reflect the richness of instructions.
+  - Users may have a preference how description length as longer descriptions may include more clear guidance and indicate expertise, building trust with the users.
 - **`is_weekend`**: Boolean indicating whether the recipe was submitted on a Saturday or Sunday, derived from `submitted`.
-
-These features are known at the time of submission and may correlate with engagement or recipe quality.
-
-### Feature Types
-
-- **Quantitative**:  
-  - `n_ingredients`, `n_steps`, `minutes`, `calories`, `protein_pdv`, `total_fat_pdv`, `sugar_pdv`, `sodium_pdv`, `description_length`
-  - Transformed using `StandardScaler`
-  
-- **Binary**:  
-  - `is_weekend`
-  - Left as-is using `passthrough` in the `ColumnTransformer`
+  - Recipe creators may have more time on the weekends to carefully craft their dishes which may impact how users perceive it.
 
 ### Model and Pipeline
 
@@ -429,18 +382,18 @@ We performed **hyperparameter tuning** using `GridSearchCV` to search over:
 - `n_estimators`: [50, 100]  
 - `max_depth`: [5, 10, None]
 
-Cross-validation was performed on the training set only.
+Cross-validation was performed on the training set and the combination that minimized the RMSE was selected for the hyperparameters.
 
 ### Best Hyperparameters
 
 - `n_estimators`: 100
 - `max_depth`: 5
 
-### Evaluation
+### Performance
 
 - **Final RMSE**: 0.6348
 
-Compared to our baseline, this model reduced error and demonstrated improved predictive power — particularly due to the new features and model flexibility. The final model performs better than the baseline, supporting the idea that text-based and temporal features (like `description_length` and `is_weekend`) help explain user ratings. This model is more expressive and better suited for capturing subtle interactions between recipe attributes.
+Compared to our baseline, this model reduced error and demonstrated improved predictive power, particularly due to the new features and model flexibility. The final model performs better than the baseline, supporting the idea that features such as `description_length` and `is_weekend` help to explain user ratings. This model is more expressive and better suited for capturing subtle interactions between recipe attributes.
 
 ---
 
@@ -455,29 +408,13 @@ To assess whether our final model performs equitably across groups, we performed
 - **Group X**: Recipes submitted on a **weekend** (`is_weekend = 1`)
 - **Group Y**: Recipes submitted on a **weekday** (`is_weekend = 0`)
 - **Evaluation Metric**: RMSE (Root Mean Squared Error)
-
-We used the **final fitted mode** and did not retrain or modify it during the test.
+- **Test Statistic**: The *absolute difference* between the RMSE for each group
 
 ### Hypotheses
 
 - **Null Hypothesis (H₀)**: The model’s RMSE is equal for weekend and weekday recipes. Any observed difference is due to chance.
 - **Alternative Hypothesis (H₁)**: The model’s RMSE differs between weekend and weekday recipes.
-
-### Test Design
-
-We computed the RMSE for each group using the test set, then calculated the **absolute difference** between the two.
-
-<iframe
-  src="assets/rmse.html"
-  width="700"
-  height="400"
-  frameborder="0"
-></iframe>
-
-Next, we performed a **permutation test**:
-- We shuffled the `is_weekend` labels 1000 times.
-- For each shuffle, we computed the RMSE difference.
-- We calculated the **p-value** as the proportion of permutations with a difference at least as large as the observed difference.
+- **Significance Level (α)**: 0.05
 
 <iframe
   src="assets/perm_rmse2.html"
@@ -490,8 +427,3 @@ Next, we performed a **permutation test**:
 - **p-value**: 0.5250
 
 Since the p-value is greater than 0.05, we **fail to reject the null hypothesis**. This suggests that our model does **not show statistically significant unfairness** in predictive accuracy between weekend and weekday recipes.
-
-Although small differences exist, they are consistent with what we’d expect under random variation, and we did not find strong evidence of model bias across this grouping.
-
-
-
