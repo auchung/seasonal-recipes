@@ -182,11 +182,10 @@ Generally, the less number of steps, the higher the precision. As the number of 
 
 We examined whether any missing data in our dataset is likely **Not Missing at Random (NMAR)**.
 
-The most important column with missing values is `avg_rating`, which represents the mean user rating for a recipe. Since `avg_rating` is computed from user-submitted ratings, it is plausible that missingness is **not random**. For example:
-- Newer or less popular recipes may not yet have any ratings.
-- Recipes with low engagement might never receive a rating at all.
+The column, `description`, contains missing values, which conveys that the reciper creator did not submit a description for their recipe. We determined that descriptions would be *NMAR* if their absence is related to qualities we don’t observe in the dataset. For instance, the recipe creator might decide to skip on writing a description if the recipe is very basic and they feel it doesn’t need one or if they're rushing to submit the recipe. 
 
-Thus, we believe that `avg_rating` is **likely NMAR** — its missingness may be directly related to its own value or latent factors like user behavior and visibility. We would need additional data (e.g., views, clicks) to determine if it’s MAR instead.
+Because these underlying factors aren’t captured in the dataset, the missingness in `description` is not related to other columns. 
+Thus, we believe that `description` is **likely NMAR** where its missingness may be directly related to its own value, not other columns. 
 
 ---
 
@@ -480,17 +479,17 @@ Next, we performed a **permutation test**:
 - For each shuffle, we computed the RMSE difference.
 - We calculated the **p-value** as the proportion of permutations with a difference at least as large as the observed difference.
 
-- **Observed RMSE difference**: 0.0329
-- **p-value**: 0.5250
-
-Since the p-value is greater than 0.05, we **fail to reject the null hypothesis**. This suggests that our model does **not show statistically significant unfairness** in predictive accuracy between weekend and weekday recipes.
-
 <iframe
-  src="assets/rmse.html"
+  src="assets/perm_rmse.html"
   width="700"
   height="400"
   frameborder="0"
 ></iframe>
+
+- **Observed RMSE difference**: 0.0329
+- **p-value**: 0.5250
+
+Since the p-value is greater than 0.05, we **fail to reject the null hypothesis**. This suggests that our model does **not show statistically significant unfairness** in predictive accuracy between weekend and weekday recipes.
 
 Although small differences exist, they are consistent with what we’d expect under random variation, and we did not find strong evidence of model bias across this grouping.
 
