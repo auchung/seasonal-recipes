@@ -209,9 +209,15 @@ We computed the observed difference in mean `minutes` between recipes with and w
 ></iframe>
 
 
-- **Observed Difference**: 
+- **Observed Difference**: 117.34
 - **p-value**: 0.036
 
+<iframe
+  src="assets/perm_min.html"
+  width="700"
+  height="400"
+  frameborder="0"
+></iframe>
 
 
 **Conclusion**: Since the p-value is less than 0.05, we reject the null hypothesis. **Missingness in `avg_rating` does depend on `minutes`.**
@@ -235,6 +241,13 @@ We calculated the observed difference between the **maximum and minimum** missin
 
 - **Observed Difference**: _(insert value, e.g., 0.016)_
 - **p-value**: _(insert value, e.g., 0.231)_
+
+<iframe
+  src="assets/perm_day.html"
+  width="700"
+  height="400"
+  frameborder="0"
+></iframe>
 
 **Conclusion**: Since the p-value is greater than 0.05, we fail to reject the null hypothesis. **There is no strong evidence that `avg_rating` missingness depends on `day_of_week`.**
 
@@ -374,7 +387,7 @@ We used **Root Mean Squared Error (RMSE)** as our evaluation metric, since:
 
 ### Performance
 
-- **Baseline RMSE**: _(insert your model’s test RMSE here, e.g., 0.4128)_
+- **Baseline RMSE**: 0.6360
 
 The baseline model establishes a starting point for performance. Although simple, it already captures some signal from the features and provides a meaningful benchmark to improve upon in our final model.
 
@@ -429,7 +442,7 @@ Cross-validation was performed on the training set only.
 
 ### Evaluation
 
-- **Final RMSE**: _(insert your final model’s test RMSE, e.g., 0.3712)_
+- **Final RMSE**: 0.6348
 
 Compared to our baseline, this model reduced error and demonstrated improved predictive power — particularly due to the new features and model flexibility. The final model performs better than the baseline, supporting the idea that text-based and temporal features (like `description_length` and `is_weekend`) help explain user ratings. This model is more expressive and better suited for capturing subtle interactions between recipe attributes.
 
@@ -447,7 +460,7 @@ To assess whether our final model performs equitably across groups, we performed
 - **Group Y**: Recipes submitted on a **weekday** (`is_weekend = 0`)
 - **Evaluation Metric**: RMSE (Root Mean Squared Error)
 
-We used the **final fitted model from Step 7** and did not retrain or modify it during the test.
+We used the **final fitted mode** and did not retrain or modify it during the test.
 
 ### Hypotheses
 
@@ -464,11 +477,17 @@ Next, we performed a **permutation test**:
 - We calculated the **p-value** as the proportion of permutations with a difference at least as large as the observed difference.
 ### Results
 
-- **Observed RMSE difference**: _(insert value, e.g., 0.0174)_
-- **p-value**: _(insert value, e.g., 0.194)_
+- **Observed RMSE difference**: 0.0329
+- **p-value**: 0.5250
 
 Since the p-value is greater than 0.05, we **fail to reject the null hypothesis**. This suggests that our model does **not show statistically significant unfairness** in predictive accuracy between weekend and weekday recipes.
 
+<iframe
+  src="assets/rmse.html"
+  width="700"
+  height="400"
+  frameborder="0"
+></iframe>
+
 Although small differences exist, they are consistent with what we’d expect under random variation, and we did not find strong evidence of model bias across this grouping.
 
-*_(Optional: Embed histogram of permuted RMSE differences with observed value marked)_*
